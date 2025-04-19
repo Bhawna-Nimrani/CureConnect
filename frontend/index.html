@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CureConnect</title>
+    <style>
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2196F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .chat-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .chat-frame {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            overflow: hidden;
+        }
+
+        .chat-frame.active {
+            display: block;
+        }
+
+        .doctor-list {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .doctor-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Dialogflow Messenger -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      //To minimise the height of chatbox
+      $(document).ready(function () {
+        window.addEventListener("dfMessengerLoaded", function (event) {
+          $r1 = document.querySelector("df-messenger");
+          $r2 = $r1.shadowRoot.querySelector("df-messenger-chat");
+          $r3 = $r2.shadowRoot.querySelector("df-messenger-user-input"); //for other mods
+          var sheet = new CSSStyleSheet();
+          // manage box height from here
+          sheet.replaceSync(`div.chat-wrapper[opened="true"] { width: 470px }`);
+          $r2.shadowRoot.adoptedStyleSheets = [sheet];
+        });
+      });
+    </script>
+    <style>
+      /* Customize the messenger container width */
+      df-messenger {
+        --df-messenger-button-titlebar-color: #16a085;
+      }
+
+      .chat-wrapper[opened="true"] {
+        width: 960px !important;
+      }
+      /* Style the chat icon */
+      df-messenger-toggle-icon {
+        color: #0b5394 !important;
+        background-color: white !important;
+        width: 800px;
+      }
+    </style>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Bubble"
+      agent-id="09aa6ad0-ecda-448a-8f82-d4cf821e7d03"
+      language-code="en"
+    ></df-messenger>
+
+    <script type="module" src="/src/main.jsx"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </body>
+</html>
